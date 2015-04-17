@@ -140,18 +140,25 @@ int main(void)
 
 TASK(InitTask)
 {
+   /* Iniciar CIAAK */
    ciaak_start();
 
+   /* Iniciar Teclado */
    teclado_init();
 
+   /* Iniciar los LEDS */
    leds_init();
 
+   /* Iniciar el ModBus Slave */
    modbusSlave_init();
 
+   /* Iniciar el Valor del Led de Encendido */
    tiltLed = 0x20;
 
+   /* Setear el valor de que Led Iniciar */
    leds_set(tiltLed);
 
+   /* Iniciar el Valor de Periodo */
    tiltPer = 100;
 
    TerminateTask();
@@ -159,8 +166,9 @@ TASK(InitTask)
 
 TASK(ledBlink)
 {
-   uint8_t outputs;
+   uint8_t outputs
 
+   /* Contador de valor de Periodo - Reset a Cero cuando llega a cierto valor */
    if (count <= tiltPer/2)
    {
       leds_set(tiltLed);
@@ -181,58 +189,21 @@ TASK(ledBlink)
 
 TASK(LecturaTecladoTask)
 {
- //  uint8_t teclas;
-
    /* lee los flancos de las teclas */
-//   teclas = teclado_getFlancos();
+   teclas = teclado_getFlancos();
 
+   /* Lectura de Teclado */
    teclado_task();
 
-   procesarTeclas();
+   /* Procesamiento de Teclas */
+   procesarTeclas(teclas);
 
-   /* si se oprime la tecla parpadea el led */
-/*   if (TECLADO_TEC1_BIT & teclas)
-   {
-      if (tiltLed != 0B00000001)
-      {
-         tiltLed = tiltLed >> 1;
-      }
-   }*/
-
-   /* si se oprime la tecla parpadea el led */
-/*   if (TECLADO_TEC2_BIT & teclas)
-   {
-      if (tiltLed != 0B00100000)
-      {
-         tiltLed = tiltLed << 1;
-      }
-   }*/
-
-   /* si se oprime la tecla parpadea el led */
-/*   if (TECLADO_TEC3_BIT & teclas)
-   {
-      tiltPer = tiltPer + 100;
-      if (tiltPer > 1000)
-      {
-         tiltPer = 1000;
-      }
-   }*/
-
-   /* si se oprime la tecla parpadea el led */
-/*   if (TECLADO_TEC4_BIT & teclas)
-   {
-      tiltPer = tiltPer - 100;
-      if (tiltPer < 100)
-      {
-         tiltPer = 100;
-      }
-   }
-*/
    TerminateTask();
 }
 
 TASK(modBusTask)
 {
+   /* Activar la Tarea de ModBus como Slave */
    modbusSlave_task();
 
    TerminateTask();

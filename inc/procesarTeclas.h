@@ -46,13 +46,11 @@ uint8_t tiltLed;
 uint16_t tiltPer;
 uint8_t teclas;
 
+
 /*==================[external functions declaration]=========================*/
 
-// Procesamiento de Teclas por MODBUS
-extern void procesarTeclasModBus(uint8_t value);
-
-// Procesamiento de Teclas propio
-extern void procesarTeclas(void);
+// Procesamiento de Teclas
+extern void procesarTeclas(teclas);
 
 /*==================[cplusplus]==============================================*/
 #ifdef __cplusplus

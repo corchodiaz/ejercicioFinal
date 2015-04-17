@@ -97,24 +97,24 @@ extern void leds_init(void)
 
 extern void leds_toggle(uint8_t mask)
 {
-   uint8_t outputs;
-   outputs ^= mask;
+//   uint8_t outputs;
+//   outputs ^= mask;
 }
 
 extern void leds_on(uint8_t mask)
 {
-   uint8_t outputs;
-   outputs = leds_get();
-   outputs ^= mask;
-   leds_set(outputs);
+//   uint8_t outputs;
+//   outputs = leds_get();
+//   outputs ^= mask;
+//   leds_set(outputs);
 }
 
 extern void leds_off(uint8_t mask)
 {
-   uint8_t outputs;
-   outputs = leds_get();
-   outputs |= mask;
-   leds_set(outputs);
+//   uint8_t outputs;
+//   outputs = leds_get();
+//   outputs |= mask;
+//   leds_set(outputs);
 }
 
 extern uint8_t leds_get(void)

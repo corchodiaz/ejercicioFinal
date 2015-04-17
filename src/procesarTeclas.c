@@ -88,18 +88,8 @@
 
 /*==================[external functions definition]==========================*/
 
-extern void procesarTeclasModBus(uint8_t value)
+extern void procesarTeclas(teclas)
 {
-   tiltLed = value;
-}
-
-extern void procesarTeclas(void)
-{
-   uint8_t teclas;
-
-   /* lee los flancos de las teclas */
-   teclas = teclado_getFlancos();
-
    /* si se oprime la tecla parpadea el led */
    if (TECLADO_TEC1_BIT & teclas)
    {
