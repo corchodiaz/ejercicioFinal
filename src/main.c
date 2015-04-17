@@ -74,12 +74,13 @@
 #include "leds.h"
 #include "teclado.h"
 #include "modbusSlave.h"
+#include "procesarTeclas.h"
 
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data declaration]==============================*/
-static uint8_t tiltLed;
-static uint16_t tiltPer;
+//static uint8_t tiltLed;
+//static uint16_t tiltPer;
 static uint16_t count;
 
 /*==================[internal functions declaration]=========================*/
@@ -180,43 +181,45 @@ TASK(ledBlink)
 
 TASK(LecturaTecladoTask)
 {
-   uint8_t teclas;
+ //  uint8_t teclas;
 
    /* lee los flancos de las teclas */
-   teclas = teclado_getFlancos();
+//   teclas = teclado_getFlancos();
 
    teclado_task();
 
+   procesarTeclas();
+
    /* si se oprime la tecla parpadea el led */
-   if (TECLADO_TEC1_BIT & teclas)
+/*   if (TECLADO_TEC1_BIT & teclas)
    {
       if (tiltLed != 0B00000001)
       {
          tiltLed = tiltLed >> 1;
       }
-   }
+   }*/
 
    /* si se oprime la tecla parpadea el led */
-   if (TECLADO_TEC2_BIT & teclas)
+/*   if (TECLADO_TEC2_BIT & teclas)
    {
       if (tiltLed != 0B00100000)
       {
          tiltLed = tiltLed << 1;
       }
-   }
+   }*/
 
    /* si se oprime la tecla parpadea el led */
-   if (TECLADO_TEC3_BIT & teclas)
+/*   if (TECLADO_TEC3_BIT & teclas)
    {
       tiltPer = tiltPer + 100;
       if (tiltPer > 1000)
       {
          tiltPer = 1000;
       }
-   }
+   }*/
 
    /* si se oprime la tecla parpadea el led */
-   if (TECLADO_TEC4_BIT & teclas)
+/*   if (TECLADO_TEC4_BIT & teclas)
    {
       tiltPer = tiltPer - 100;
       if (tiltPer < 100)
@@ -224,12 +227,13 @@ TASK(LecturaTecladoTask)
          tiltPer = 100;
       }
    }
-
+*/
    TerminateTask();
 }
 
 TASK(modBusTask)
 {
+   modbusSlave_task();
 
    TerminateTask();
 }

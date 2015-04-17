@@ -199,7 +199,7 @@ static void cmd0x10WriteMultipleReg(
          /* escritura de estado de teclas */
          case MODBUS_ADDRESS_TECLADO_REMOTO:
             temp16u = ciaaModbus_readInt(buf);
-            //procesarTeclas(temp16u);
+            procesarTeclas(temp16u);
             quantityRegProcessed = 1;
             break;
 
