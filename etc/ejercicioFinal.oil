@@ -26,6 +26,74 @@ OSEK OSEK {
       STACK = 512;
       TYPE = BASIC;
       SCHEDULE = NON;
+      RESOURCE = POSIXR;
+      RESOURCE = MODBUSR;
+   };
+
+   TASK ledBlink {
+      PRIORITY = 4;
+      ACTIVATION = 1;
+      STACK = 512;
+      TYPE = EXTENDED;
+      EVENT = POSIXE;
+      RESOURCE = POSIXR;
+      SCHEDULE = NON;
+   };
+
+   ALARM ActivateLedBlink {
+      COUNTER = HardwareCounter;
+      ACTION = ACTIVATETASK {
+         TASK = ledBlink;
+      }
+      AUTOSTART = TRUE {
+         APPMODE = AppMode1;
+         ALARMTIME = 0;
+         CYCLETIME = 10;
+      };
+   };
+
+   TASK LecturaTecladoTask {
+      PRIORITY = 2;
+      ACTIVATION = 1;
+      STACK = 512;
+      TYPE = EXTENDED;
+      EVENT = POSIXE;
+      RESOURCE = POSIXR;
+      SCHEDULE = FULL;
+   };
+
+   ALARM ActivateTaskTeclado {
+      COUNTER = HardwareCounter;
+      ACTION = ACTIVATETASK {
+         TASK = LecturaTecladoTask;
+      }
+      AUTOSTART = TRUE {
+         APPMODE = AppMode1;
+         ALARMTIME = 1;
+         CYCLETIME = 10;
+      };
+   };
+
+   TASK modBusTask {
+      PRIORITY = 1;
+      ACTIVATION = 1;
+      STACK = 512;
+      TYPE = EXTENDED;
+      EVENT = POSIXE;
+      RESOURCE = MODBUSR;
+      SCHEDULE = FULL;
+   };
+   
+   ALARM ActivateTaskmodBus {
+      COUNTER = SoftwareCounter;
+      ACTION = ACTIVATETASK {
+         TASK = modBusTask;
+      }
+      AUTOSTART = TRUE {
+         APPMODE = AppMode1;
+         ALARMTIME = 2;
+         CYCLETIME = 10;
+      };
    };
 
    COUNTER HardwareCounter {
@@ -35,6 +103,30 @@ OSEK OSEK {
       TYPE = HARDWARE;
       COUNTER = HWCOUNTER0;
    };
+   
+   COUNTER SoftwareCounter {
+      MAXALLOWEDVALUE = 1000;
+      TICKSPERBASE = 1;
+      MINCYCLE = 1;
+      TYPE = SOFTWARE;
+   };
+   
+   ISR UART0_IRQHandler {
+      INTERRUPT = UART0;
+      CATEGORY = 2;
+      PRIORITY = 0;
+   };
 
+   ISR UART2_IRQHandler {
+      INTERRUPT = UART2;
+      CATEGORY = 2;
+      PRIORITY = 0;
+   };
+
+   ISR UART3_IRQHandler {
+      INTERRUPT = UART3;
+      CATEGORY = 2;
+      PRIORITY = 0;
+   };
    
 };

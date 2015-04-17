@@ -78,6 +78,9 @@
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data declaration]==============================*/
+static uint8_t tiltLed;
+static uint16_t tiltPer;
+static uint16_t count;
 
 /*==================[internal functions declaration]=========================*/
 
@@ -143,6 +146,90 @@ TASK(InitTask)
    leds_init();
 
    modbusSlave_init();
+
+   tiltLed = 0x20;
+
+   leds_set(tiltLed);
+
+   tiltPer = 100;
+
+   TerminateTask();
+}
+
+TASK(ledBlink)
+{
+   uint8_t outputs;
+
+   if (count <= tiltPer/2)
+   {
+      leds_set(tiltLed);
+   }
+   else if (count > tiltPer)
+   {
+      count = 0;
+   }
+   else
+   {
+      leds_set(0);
+   }
+
+   count = count + 10;
+
+   TerminateTask();
+}
+
+TASK(LecturaTecladoTask)
+{
+   uint8_t teclas;
+
+   /* lee los flancos de las teclas */
+   teclas = teclado_getFlancos();
+
+   teclado_task();
+
+   /* si se oprime la tecla parpadea el led */
+   if (TECLADO_TEC1_BIT & teclas)
+   {
+      if (tiltLed != 0B00000001)
+      {
+         tiltLed = tiltLed >> 1;
+      }
+   }
+
+   /* si se oprime la tecla parpadea el led */
+   if (TECLADO_TEC2_BIT & teclas)
+   {
+      if (tiltLed != 0B00100000)
+      {
+         tiltLed = tiltLed << 1;
+      }
+   }
+
+   /* si se oprime la tecla parpadea el led */
+   if (TECLADO_TEC3_BIT & teclas)
+   {
+      tiltPer = tiltPer + 100;
+      if (tiltPer > 1000)
+      {
+         tiltPer = 1000;
+      }
+   }
+
+   /* si se oprime la tecla parpadea el led */
+   if (TECLADO_TEC4_BIT & teclas)
+   {
+      tiltPer = tiltPer - 100;
+      if (tiltPer < 100)
+      {
+         tiltPer = 100;
+      }
+   }
+
+   TerminateTask();
+}
+
+TASK(modBusTask)
+{
 
    TerminateTask();
 }
