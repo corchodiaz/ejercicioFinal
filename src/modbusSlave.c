@@ -283,7 +283,6 @@ extern void modbusSlave_task(void)
    ciaaModbus_gatewayMainTask(hModbusGateway);
 }
 
-
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
